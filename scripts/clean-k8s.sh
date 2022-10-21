@@ -17,4 +17,5 @@ done
 $kubectl delete MongoDBCommunity --all -n $namespace
 $kubectl delete all --all -n $namespace
 $kubectl delete secrets --all -n $namespace
+$kubectl delete crd mongodbcommunity.mongodbcommunity.mongodb.com
 $kubectl delete namespace $namespace

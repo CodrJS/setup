@@ -26,7 +26,7 @@ function clearLine() {
 
 function waitForMongo() {
   while : ; do
-    local status=`microk8s kubectl get mongodbcommunity mongodb -n codr-test -o jsonpath="{.status.phase}"`
+    local status=`microk8s kubectl get mongodbcommunity mongodb -n $namespace -o jsonpath="{.status.phase}"`
     sleep 0.2
     [[ $status == "Running" ]] && break;
   done
