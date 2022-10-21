@@ -39,7 +39,7 @@ spec:
   entryPoints:
     - http
   routes:
-  - match: Host(`perc_lab.codrjs.com`) && Path(`/api`)
+  - match: Host(`perc_lab.codrjs.com`) && PathPrefix(`/api`)
     kind: Rule
     services:
     - name: codr-api-srv
@@ -54,7 +54,7 @@ spec:
   entryPoints:
     - https
   routes:
-  - match: Host(`perc_lab.codrjs.com`) && Path(`/api`)
+  - match: Host(`perc_lab.codrjs.com`) && PathPrefix(`/api`)
     kind: Rule
     services:
     - name: codr-api-srv
