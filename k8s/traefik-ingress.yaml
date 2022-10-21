@@ -44,7 +44,7 @@ spec:
     services:
     - name: codr-api-srv
       passHostHeader: true
-      port: 3000
+      port: 8000
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -59,6 +59,6 @@ spec:
     services:
     - name: codr-api-srv
       passHostHeader: true
-      port: 3000
+      port: 8000
   tls:
     certResolver: production
