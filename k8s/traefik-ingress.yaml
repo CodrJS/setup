@@ -1,0 +1,64 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: codr-notls
+spec:
+  entryPoints:
+    - http
+  routes:
+  - match: Host(`codrjs.com`) || Host(`www.codrjs.com`)
+    kind: Rule
+    services:
+    - name: codr-srv
+      passHostHeader: true
+      port: 3000
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: codr-tls
+spec:
+  entryPoints:
+    - https
+  routes:
+  - match: Host(`codrjs.com`) || Host(`www.codrjs.com`)
+    kind: Rule
+    services:
+    - name: codr-srv
+      passHostHeader: true
+      port: 3000
+  tls:
+    certResolver: production
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: codr-notls
+spec:
+  entryPoints:
+    - http
+  routes:
+  - match: Host(`api.codrjs.com`)
+    kind: Rule
+    services:
+    - name: codr-api-srv
+      passHostHeader: true
+      port: 3000
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: codr-tls
+spec:
+  entryPoints:
+    - https
+  routes:
+  - match: Host(`api.codrjs.com`)
+    kind: Rule
+    services:
+    - name: codr-api-srv
+      passHostHeader: true
+      port: 3000
+  tls:
+    certResolver: production
