@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - http
   routes:
-  - match: Host(`codrjs.com`) || Host(`www.codrjs.com`)
+  - match: Host(`perc_lab.codrjs.com`)
     kind: Rule
     services:
     - name: codr-srv
@@ -22,7 +22,7 @@ spec:
   entryPoints:
     - https
   routes:
-  - match: Host(`codrjs.com`) || Host(`www.codrjs.com`)
+  - match: Host(`perc_lab.codrjs.com`)
     kind: Rule
     services:
     - name: codr-srv
@@ -39,7 +39,7 @@ spec:
   entryPoints:
     - http
   routes:
-  - match: Host(`api.codrjs.com`)
+  - match: Host(`perc_lab.codrjs.com`) && Path(`/api`)
     kind: Rule
     services:
     - name: codr-api-srv
@@ -54,7 +54,7 @@ spec:
   entryPoints:
     - https
   routes:
-  - match: Host(`api.codrjs.com`)
+  - match: Host(`perc_lab.codrjs.com`) && Path(`/api`)
     kind: Rule
     services:
     - name: codr-api-srv
