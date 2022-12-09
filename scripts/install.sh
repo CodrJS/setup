@@ -2,12 +2,12 @@
 
 ### SETUP ENV VARS
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-K8S_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && dirname "$(pwd)/../kubernetes/." )
+K8S_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && dirname "$(pwd)/../k8s/." )
 spinner=$SCRIPT_DIR/spinner.sh
 
-namespace==${namespace:-codr}
-kubectl==${kubectl:-kubectl}
-helm==${helm:-helm}
+namespace=${namespace:-codr}
+kubectl=${kubectl:-kubectl}
+helm=${helm:-helm}
 
 while [ $# -gt 0 ]; do
   if [[ $1 == *"--"* ]]; then
@@ -26,7 +26,7 @@ function clearLine() {
 
 function waitForMongo() {
   while : ; do
-    local status=`microk8s kubectl get mongodbcommunity mongodb -n $namespace -o jsonpath="{.status.phase}"`
+    local status=`$kubectl get mongodbcommunity mongodb -n $namespace -o jsonpath="{.status.phase}"`
     sleep 0.2
     [[ $status == "Running" ]] && break;
   done

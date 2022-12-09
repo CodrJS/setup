@@ -1,9 +1,9 @@
 #!/bin/bash
 
 ### SETUP ENV VARS
-namespace==${namespace:-codr}
-kubectl==${kubectl:-kubectl}
-helm==${helm:-helm}
+namespace=${namespace:-codr}
+kubectl=${kubectl:-kubectl}
+helm=${helm:-helm}
 
 while [ $# -gt 0 ]; do
   if [[ $1 == *"--"* ]]; then

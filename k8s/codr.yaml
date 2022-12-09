@@ -72,6 +72,11 @@ spec:
           env:
             - name: NODE_ENV
               value: production
+            - name: "MONGODB_URI"
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-codr-admin
+                  key: connectionString.standardSrv
           resources:
             limits:
               memory: 512Mi
