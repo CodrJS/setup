@@ -25,6 +25,32 @@ spec:
   selector:
     app: codr
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ui-env
+data:
+  SECRET: "sessionSecret"
+  NEXT_PUBLIC_ORG_NAME: "your org name"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-env
+data:
+  HOST: "http://yourdomain.tld"
+  API_PATH: "/api/v1"
+  ADMIN_EMAIL: "yourEmailAddress"
+  JWT_ISSUER: "yourdomain.tld"
+  JWT_ALGORITHM: "HS256"
+  JWT_SECRET: "jwtSignSecret"
+  SECRET: "sessionSecret"
+  GITHUB_CLIENT_ID: ""
+  GITHUB_CLIENT_SECRET: ""
+  EMAIL_FROM: "'Your Team' <noreply@yourdomain.tld>"
+  AWS_ACCESS_KEY_ID: ""
+  AWS_SECRET_ACCESS_KEY: ""
+---
 # Codr Deployment
 kind: Deployment
 apiVersion: apps/v1
@@ -51,6 +77,9 @@ spec:
           ports:
             - name: http
               containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: ui-env
           env:
             - name: NODE_ENV
               value: production
@@ -69,10 +98,13 @@ spec:
           ports:
             - name: api
               containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: api-env
           env:
             - name: NODE_ENV
               value: production
-            - name: "MONGODB_URI"
+            - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
                   name: mongodb-codr-admin

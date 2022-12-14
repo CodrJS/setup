@@ -61,12 +61,14 @@ By default, the script should work without any additional arguments unless the s
 
 **Normal installation:**
 ```sh
-chmod +x scripts/install.sh
+chmod +x scripts/*.sh
 ./scripts/install.sh
+kubectl apply -f k8s/codr.yaml 
 ```
 
 **MicroK8s installation:**
 ```sh
-chmod +x scripts/install.sh
+chmod +x scripts/*.sh
 ./scripts/install.sh --kubectl "microk8s.kubectl" --helm "microk8s.helm3"
+kubectl apply -f k8s/codr.yaml 
 ```
