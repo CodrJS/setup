@@ -1,0 +1,51 @@
+replicaCount: 3
+
+image:
+  repository: bitnami/kafka
+  tag: 3.2
+
+containerPorts:
+  client: 9092
+  internal: 9094
+  external: 9095
+  metrics: 9308
+
+service:
+  ports:
+    client: 9092
+    internal: 9094
+    external: 9095
+    metrics: 9308
+
+auth:
+  clientProtocol: plaintext
+  externalClientProtocol: plaintext
+
+metrics:
+  kafka:
+    enabled: true
+    containerPorts:
+      metrics: 9308
+
+persistence:
+  size: 100Mi
+
+logPersistence:
+  size: 8Mi
+
+kraft:
+  enabled: false
+
+zookeeper:
+  enabled: true
+  replicaCount: 3
+  persistence:
+    size: 100Mi
+
+resources:
+  requests:
+    cpu: 0.2
+    memory: 512Mi
+  limits:
+    cpu: 0.5
+    memory: 1Gi

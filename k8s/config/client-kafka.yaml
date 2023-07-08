@@ -1,0 +1,17 @@
+domain: kafka
+
+image:
+  name: provectuslabs/kafka-ui:latest
+  pullPolicy: Always
+
+service:
+  port: 8080
+container:
+  port: 8080
+
+kafkaClusters:
+  - name: codr-local
+
+security:
+  username: admin
+  passowrd: password

@@ -1,0 +1,66 @@
+# User Group Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: usergroup
+spec:
+  ports:
+  - name: http
+    port: 8000
+  selector:
+    app: codr-user-usergroup
+---
+# User Group Config
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-usergroup-env
+data:
+  ### KAFKA SETTINGS ###
+  KAFKA_CONSUMER_GROUP: codr.user.usergroup.group
+  ### OPENAPI SETTINGS ###
+  OPENAPI_INFO_TITLE: User Group API
+  OPENAPI_INFO_DESC: Preform CRUD operations on the user group collection in Mongo.
+  # OPENAPI_SERVER_ONE_URL: http://localhost:8000/v1/
+  # OPENAPI_SERVER_ONE_DESC: Local server
+  OPENAPI_SERVER_TWO_URL: http://api.codr.local/v1/usergroup/
+  OPENAPI_SERVER_TWO_DESC: Dev server
+---
+# User Group Deployment
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: codr-user-usergroup
+  labels:
+    app: codr-user-usergroup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codr-user-usergroup
+  template:
+    metadata:
+      name: codr-user-usergroup
+      labels:
+        app: codr-user-usergroup
+    spec:
+      containers:
+      # RESTful API container
+      - name: usergroup
+        # grab the container from the Github container registry
+        image: ghcr.io/codrjs/codr-user-usergroup:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: shared-env
+        - configMapRef:
+            name: user-usergroup-env
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: "0.5"
+          requests:
+            memory: 128Mi
+            cpu: "0.2"

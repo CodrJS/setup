@@ -1,0 +1,51 @@
+# Codr UI Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-web
+spec:
+  ports:
+  - protocol: TCP
+    name: http
+    port: 3000
+  selector:
+    app: codr-client-web
+---
+# Codr Deployment
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: codr-client-web
+  labels:
+    app: codr-client-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codr-client-web
+  template:
+    metadata:
+      name: codr-client-web
+      labels:
+        app: codr-client-web
+    spec:
+      containers:
+      # Web client container
+      - name: codr-client-web
+        # grab the container from the Github container registry
+        image: ghcr.io/codrjs/webui:latest
+        # image: codr-client-web:latest
+        imagePullPolicy: "Always"
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: production
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: "0.5"
+          requests:
+            memory: 64Mi
+            cpu: "0.2"

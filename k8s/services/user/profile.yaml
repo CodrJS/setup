@@ -1,0 +1,66 @@
+# Profile Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile
+spec:
+  ports:
+  - name: http
+    port: 8000
+  selector:
+    app: codr-user-profile
+---
+# Profile Config
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-profile-env
+data:
+  ### KAFKA SETTINGS ###
+  KAFKA_CONSUMER_GROUP: codr.user.profile.group
+  ### OPENAPI SETTINGS ###
+  OPENAPI_INFO_TITLE: User Profile API
+  OPENAPI_INFO_DESC: Preform CRUD operations on the user profile collection in Mongo.
+  # OPENAPI_SERVER_ONE_URL: http://localhost:8000/v1/
+  # OPENAPI_SERVER_ONE_DESC: Local server
+  OPENAPI_SERVER_TWO_URL: http://api.codr.local/v1/profile/
+  OPENAPI_SERVER_TWO_DESC: Dev server
+---
+# User Profile Deployment
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: codr-user-profile
+  labels:
+    app: codr-user-profile
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codr-user-profile
+  template:
+    metadata:
+      name: codr-user-profile
+      labels:
+        app: codr-user-profile
+    spec:
+      containers:
+      # RESTful API container
+      - name: profile
+        # grab the container from the Github container registry
+        image: ghcr.io/codrjs/codr-user-profile:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: shared-env
+        - configMapRef:
+            name: user-profile-env
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: "0.5"
+          requests:
+            memory: 128Mi
+            cpu: "0.2"

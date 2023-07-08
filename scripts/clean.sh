@@ -1,7 +1,9 @@
 #!/bin/bash
 
 ### SETUP ENV VARS
-namespace=${namespace:-codr}
+K8S_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && dirname "$(pwd)/../k8s/." )
+
+env=${env:-test}
 kubectl=${kubectl:-kubectl}
 helm=${helm:-helm}
 
@@ -14,8 +16,11 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-$kubectl delete MongoDBCommunity --all -n $namespace
+namespace=codr-$env
+
+$kubectl delete -f $K8S_DIR/dev-ingress.yaml -n $namespace
 $kubectl delete all --all -n $namespace
 $kubectl delete secrets --all -n $namespace
-$kubectl delete crd mongodbcommunity.mongodbcommunity.mongodb.com
+$kubectl delete configmaps --all -n $namespace
+
 $kubectl delete namespace $namespace

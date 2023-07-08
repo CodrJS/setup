@@ -1,0 +1,58 @@
+# Codr Helm repo
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-helm
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: codr-client-helm
+---
+# Codr Deployment
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: codr-client-helm
+  labels:
+    app: codr-client-helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codr-client-helm
+  template:
+    metadata:
+      name: codr-client-helm
+      labels:
+        app: codr-client-helm
+    spec:
+      containers:
+      # RESTful API container
+      - name: helm
+        # grab the container from the Github container registry
+        # image: ghcr.io/codrjs/codr-client-helm:latest
+        image: codr-client-helm:latest
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: 128Mi
+            cpu: "0.5"
+          requests:
+            memory: 64Mi
+            cpu: "0.2"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3

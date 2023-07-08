@@ -1,0 +1,10 @@
+domain: kafka
+
+image:
+  name: bitnami/schema-registry:7.3
+  pullPolicy: Always
+
+service:
+  port: 8081
+container:
+  port: 8081

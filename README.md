@@ -14,7 +14,7 @@ Server:
 
 In order to run this configuration for Codr, you need to have a Kubernetes (K8s) cluster running. The quickest way of installing K8s locally is through the Docker Desktop application. 
 
->**Recommendation:** For Windows users, I highly recommend installing WSL2, it allows for development in an Ubuntu environment which makes averything so much easier.
+> **Recommendation:** For Windows users, I highly recommend installing WSL2, it allows for development in an Ubuntu environment which makes averything so much easier.
 
 The installation script (`scripts/install.sh`) requires `jq` and `helm3` to be installed, you can install it on debian-based machines via the following command:
 

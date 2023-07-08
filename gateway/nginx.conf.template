@@ -1,0 +1,55 @@
+# The Codr Gateway
+server {
+  listen *:80;
+
+  location = /health {
+    access_log off;
+    add_header 'Content-Type' 'application/json';
+    return 200 '{"status":"UP"}';
+  }
+
+  # Proxy requests to user service
+  location /v1/user {
+    proxy_pass http://user.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to session service
+  location /v1/session {
+    proxy_pass http://session.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to profile service
+  location /v1/profile {
+    proxy_pass http://profile.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to auth service
+  location /v1/auth {
+    proxy_pass http://auth.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to user group service
+  location /v1/usergroup {
+    proxy_pass http://usergroup.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to project service
+  location /v1/project {
+    proxy_pass http://project.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to dataset service
+  location /v1/dataset {
+    proxy_pass http://dataset.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to sample service
+  location /v1/sample {
+    proxy_pass http://sample.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+
+  # Proxy requests to annotation service
+  location /v1/annotation {
+    proxy_pass http://annotation.${ NAMESPACE }.svc.cluster.local:8000/v1;
+  }
+}
